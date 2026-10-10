@@ -84,3 +84,11 @@ Failure: my first post-restart query checked RF-1023 by mistake, which was still
 ```
 npm test -> Test Files 3 passed, Tests 21 passed;  typecheck clean;  build ok
 ```
+
+## .gitignore env ordering (review flag)
+
+The scaffold's `.env*` rule (line 182) came after `!.env.example`, so it re-ignored the example. Moved `!.env.example` below `.env*` and added `.env.example`, which has only `DATABASE_PATH=./data/app.db`, the app's only env var.
+```
+git check-ignore -v .env .env.local .env.production .env.development.local  -> all ignored by .gitignore:182:.env*
+git check-ignore -v .env.example                                             -> .gitignore:183:!.env.example (not ignored)
+```

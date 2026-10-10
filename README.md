@@ -18,7 +18,7 @@ npm run seed          # (re)creates data/app.db with 24 refund requests + 4 flag
 npm run dev           # http://localhost:3000  (or: npm run build && npm start)
 ```
 
-Pick an identity in the yellow banner. `DATABASE_PATH` overrides the DB location (default `./data/app.db`).
+Pick an identity in the yellow banner. `DATABASE_PATH` overrides the DB location (default `./data/app.db`); see `.env.example` (sample values only, copy to `.env.local`).
 
 ## Demo identities and permissions
 
