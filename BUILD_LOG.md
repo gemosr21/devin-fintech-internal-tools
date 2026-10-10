@@ -73,3 +73,14 @@ Failure: my first post-restart query checked RF-1023 by mistake, which was still
 - Feature flags were **not cut**. Cross-tool reuse of `requirePermission` + `recordAudit` was demonstrated, but only across two small tools in one session.
 - No production auth, deployment, real integrations, pagination, or maker-checker thresholds (see README → Production gaps).
 - No automated browser (E2E) tests. Browser checks were manual and are described above.
+
+## Devin Review fixes (PR #1)
+
+- `listRefunds` search now includes `customer_email`. The README already claimed this, so the code didn't match it until now. Test added.
+- `/api/demo-identity` `returnTo`: `//evil.example` and `/\evil.example` were open redirects. Now only same-origin paths are allowed. Route test added.
+- `DecisionForm` / `FlagToggle`: a rejected `fetch` left the buttons disabled. Now uses `try/catch/finally` and shows a retryable error.
+- "Forged identities" finding: by design. The demo cookie is documented as not authentication. No change.
+
+```
+npm test -> Test Files 3 passed, Tests 21 passed;  typecheck clean;  build ok
+```

@@ -26,6 +26,8 @@ describe("listRefunds / getRefund", () => {
     expect(pending.length).toBeGreaterThan(0);
     expect(pending.every((r) => r.status === "pending")).toBe(true);
     expect(listRefunds(db, viewer, { q: "RF-1001" }).map((r) => r.id)).toEqual(["RF-1001"]);
+    const sample = all[0];
+    expect(listRefunds(db, viewer, { q: sample.customer_email }).map((r) => r.id)).toContain(sample.id);
   });
 
   it("denies reads without a recognized identity", () => {

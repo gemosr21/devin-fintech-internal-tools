@@ -71,3 +71,21 @@ describe("GET /api/refunds", () => {
     expect((await list.GET(new NextRequest("http://localhost/api/refunds"))).status).toBe(401);
   });
 });
+
+describe("POST /api/demo-identity", () => {
+  async function switchTo(returnTo: string) {
+    const { POST } = await import("../app/api/demo-identity/route");
+    const form = new FormData();
+    form.set("userId", "vera");
+    form.set("returnTo", returnTo);
+    const res = await POST(new NextRequest("http://localhost:3000/api/demo-identity", { method: "POST", body: form }));
+    return res.headers.get("location");
+  }
+
+  it("redirects to same-origin paths only", async () => {
+    expect(await switchTo("/refunds/RF-1001?x=1")).toBe("http://localhost:3000/refunds/RF-1001?x=1");
+    for (const bad of ["//evil.example", "/\\evil.example", "https://evil.example", "evil"]) {
+      expect(await switchTo(bad)).toBe("http://localhost:3000/refunds");
+    }
+  });
+});

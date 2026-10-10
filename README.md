@@ -74,7 +74,7 @@ All writes go through API route handlers, so the forbidden-request cases can be 
 ## Tests and verification
 
 ```bash
-npm test              # 20 vitest tests (domain + route handlers), temp DB per test
+npm test              # 21 vitest tests (domain + route handlers), temp DB per test
 npm run typecheck
 npm run build
 # critical path against a real server:

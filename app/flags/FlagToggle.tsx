@@ -11,18 +11,23 @@ export function FlagToggle({ flagKey, enabled }: { flagKey: string; enabled: boo
   async function toggle() {
     setBusy(true);
     setError(null);
-    const res = await fetch(`/api/flags/${flagKey}`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ enabled: !enabled }),
-    });
-    setBusy(false);
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      setError(`${res.status}: ${body.error ?? "Request failed"}`);
-      return;
+    try {
+      const res = await fetch(`/api/flags/${flagKey}`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ enabled: !enabled }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        setError(`${res.status}: ${body.error ?? "Request failed"}`);
+        return;
+      }
+      router.refresh();
+    } catch {
+      setError("Network error, please retry.");
+    } finally {
+      setBusy(false);
     }
-    router.refresh();
   }
 
   return (

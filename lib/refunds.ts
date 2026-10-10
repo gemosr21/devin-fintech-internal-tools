@@ -36,9 +36,9 @@ export function listRefunds(db: DB, actor: Actor | null, filter: { status?: stri
     args.push(filter.status);
   }
   if (filter.q?.trim()) {
-    where.push("(id LIKE ? OR customer_name LIKE ? OR merchant LIKE ?)");
+    where.push("(id LIKE ? OR customer_name LIKE ? OR customer_email LIKE ? OR merchant LIKE ?)");
     const like = `%${filter.q.trim()}%`;
-    args.push(like, like, like);
+    args.push(like, like, like, like);
   }
   const sql = `SELECT * FROM refund_requests ${where.length ? "WHERE " + where.join(" AND ") : ""} ORDER BY created_at DESC`;
   return db.prepare(sql).all(...args) as Refund[];

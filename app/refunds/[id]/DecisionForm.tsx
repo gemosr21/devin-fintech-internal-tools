@@ -12,18 +12,23 @@ export function DecisionForm({ refundId }: { refundId: string }) {
   async function submit(decision: "approve" | "reject") {
     setBusy(true);
     setError(null);
-    const res = await fetch(`/api/refunds/${refundId}/decision`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ decision, reason }),
-    });
-    setBusy(false);
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      setError(`${res.status}: ${body.error ?? "Request failed"}`);
-      return;
+    try {
+      const res = await fetch(`/api/refunds/${refundId}/decision`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ decision, reason }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        setError(`${res.status}: ${body.error ?? "Request failed"}`);
+        return;
+      }
+      router.refresh();
+    } catch {
+      setError("Network error. Nothing was saved by this attempt unless the page shows otherwise; please retry.");
+    } finally {
+      setBusy(false);
     }
-    router.refresh();
   }
 
   return (
