@@ -28,7 +28,7 @@ Actual commands, results, failures, and scope cuts. Times are minutes since the 
 
 ## Feature-flag gate decision
 
-The refunds browser flow worked and all 17 tests passed at about 22:44 UTC on the VM clock. The user's repo initial commit is 22:23 UTC, so this was well under the minute-65 threshold by the VM clock. The user's own timer is authoritative and I could not see it. Decision: **implement feature flags**, kept small.
+The refunds browser flow worked and all 17 tests passed at about 22:44 UTC on the VM clock. The user's repo initial commit is 22:23 UTC, so this was well under the minute-65 threshold by the VM clock. The user's own timer is authoritative and I could not see it. The user later confirmed it read about 20 minutes, well under 65. Decision: **implement feature flags**, kept small.
 
 Added `feature_flags` table, `seedFlags`, `lib/flags.ts` (`listFlags`, `setFlag` reusing `requirePermission` + `recordAudit` in one transaction), `GET /api/flags`, `POST /api/flags/:key`, `/flags` page, `tests/flags.test.ts`.
 
