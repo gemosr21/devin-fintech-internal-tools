@@ -2,8 +2,8 @@ import { loadEnvConfig } from "@next/env";
 import { openDb } from "../lib/db";
 import { seed } from "../lib/seed";
 
-// Load .env / .env.local the same way `next dev`/`next start` do, so DATABASE_PATH matches the app.
-loadEnvConfig(process.cwd());
+// Load .env files like `next dev` (default) or `next start` (NODE_ENV=production) so DATABASE_PATH matches the app.
+loadEnvConfig(process.cwd(), process.env.NODE_ENV !== "production");
 
 const db = openDb();
 seed(db);

@@ -101,3 +101,14 @@ echo "DATABASE_PATH=./data/custom-check.db" > .env.local && npm run seed  -> See
 rm .env.local data/custom-check.db* && npm run seed                         -> Seeded 24 ... into .../data/app.db
 npm test -> 21 passed; npm run typecheck -> clean
 ```
+
+## Seed script picks the dev env by default (review bug)
+
+`loadEnvConfig(dir)` with no `dev` argument loads the **production** files (`.env.production*`), so `npm run seed` could reset the production-path DB while `next dev` used another one. It now calls `loadEnvConfig(dir, NODE_ENV !== "production")`. With `.env.development.local` → `./data/dev-check.db` and `.env.production.local` → `./data/prod-check.db`:
+```
+npm run seed  (before fix)               -> Seeded 24 ... into ./data/prod-check.db
+npm run seed  (after fix)                -> Seeded 24 ... into ./data/dev-check.db
+NODE_ENV=production npm run seed         -> Seeded 24 ... into ./data/prod-check.db
+(no env files) npm run seed              -> .../data/app.db
+npm test -> 21 passed; typecheck clean
+```
