@@ -1,0 +1,30 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, sans-serif; color: #1a1a1a; background: #fafafa; }
+main { max-width: 1000px; margin: 0 auto; padding: 1rem 1.5rem 3rem; }
+a { color: #0b5cad; }
+.demo-banner { background: #fff3cd; border-bottom: 2px solid #d39e00; padding: 0.5rem 1.5rem; font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+.switcher { margin-left: auto; }
+.topnav { display: flex; gap: 1rem; align-items: baseline; padding: 0.75rem 1.5rem; background: #fff; border-bottom: 1px solid #e5e5e5; font-weight: 600; }
+.muted { color: #666; font-weight: normal; font-size: 0.9rem; }
+.filters { display: flex; gap: 1rem; align-items: center; margin-bottom: 0.5rem; }
+table { width: 100%; border-collapse: collapse; background: #fff; font-size: 0.9rem; }
+th, td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid #eee; vertical-align: top; }
+th { background: #f3f3f3; }
+.num { text-align: right; }
+.status { padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
+.status-pending { background: #e7f0ff; color: #0b5cad; }
+.status-approved { background: #e3f6e8; color: #1b7a36; }
+.status-rejected { background: #fde8e8; color: #a61b1b; }
+.details { display: grid; grid-template-columns: 160px 1fr; gap: 0.35rem 1rem; background: #fff; padding: 1rem; border: 1px solid #eee; }
+.details dt { font-weight: 600; color: #444; }
+.details dd { margin: 0; }
+.decision { margin-top: 1.5rem; background: #fff; padding: 1rem; border: 1px solid #eee; }
+.decision label { display: flex; flex-direction: column; gap: 0.35rem; }
+.decision textarea { font: inherit; padding: 0.5rem; }
+.actions { display: flex; gap: 0.75rem; margin-top: 0.75rem; }
+button { font: inherit; padding: 0.35rem 0.9rem; cursor: pointer; }
+.approve { background: #1b7a36; color: #fff; border: none; }
+.reject { background: #a61b1b; color: #fff; border: none; }
+.error { color: #a61b1b; font-weight: 600; }
+.notice { background: #fff; border-left: 4px solid #d39e00; padding: 0.75rem 1rem; }
+code { font-size: 0.8rem; }
