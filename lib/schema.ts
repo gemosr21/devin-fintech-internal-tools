@@ -32,6 +32,14 @@ CREATE TABLE IF NOT EXISTS audit_events (
   created_at TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS feature_flags (
+  key TEXT PRIMARY KEY,
+  description TEXT NOT NULL,
+  enabled INTEGER NOT NULL CHECK (enabled IN (0, 1)),
+  updated_by TEXT REFERENCES users(id),
+  updated_at TEXT
+);
+
 CREATE INDEX IF NOT EXISTS audit_events_entity ON audit_events (entity_type, entity_id);
 
 -- Application-level append-only guard. Not tamper-proof against anyone with direct DB access.

@@ -19,6 +19,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <IdentitySwitcher actor={actor} />
         <header className="topnav">
           <Link href="/refunds">Refunds review</Link>
+          <Link href="/flags">Feature flags</Link>
           <span className="muted">Synthetic data · prototype</span>
         </header>
         <main>{children}</main>

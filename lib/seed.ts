@@ -21,7 +21,7 @@ const REASONS = [
 export function seed(db: Database.Database) {
   const run = db.transaction(() => {
     db.exec("DROP TRIGGER IF EXISTS audit_events_no_delete");
-    db.exec("DELETE FROM audit_events; DELETE FROM refund_requests; DELETE FROM users;");
+    db.exec("DELETE FROM audit_events; DELETE FROM feature_flags; DELETE FROM refund_requests; DELETE FROM users;");
     db.exec(`CREATE TRIGGER audit_events_no_delete BEFORE DELETE ON audit_events
       BEGIN SELECT RAISE(ABORT, 'audit_events is append-only'); END;`);
     const insUser = db.prepare("INSERT INTO users (id, name, role) VALUES (?, ?, ?)");
@@ -51,6 +51,19 @@ export function seed(db: Database.Database) {
         decided ? "Seeded historical decision" : null,
       );
     }
+    seedFlags(db);
   });
   run();
+}
+
+export const SEED_FLAGS = [
+  ["instant_refunds", "Skip manual review for refunds under $20", 0],
+  ["new_kyc_queue_ui", "Show the redesigned KYC review queue", 1],
+  ["card_freeze_self_serve", "Let customers freeze cards from the app", 1],
+  ["fx_quote_v2", "Use the v2 FX quoting service", 0],
+] as const;
+
+export function seedFlags(db: Database.Database) {
+  const ins = db.prepare("INSERT INTO feature_flags (key, description, enabled) VALUES (?, ?, ?)");
+  for (const [key, description, enabled] of SEED_FLAGS) ins.run(key, description, enabled);
 }

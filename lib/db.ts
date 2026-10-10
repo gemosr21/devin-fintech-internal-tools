@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import Database from "better-sqlite3";
 import { SCHEMA } from "./schema";
-import { seed } from "./seed";
+import { seed, seedFlags } from "./seed";
 
 export type DB = Database.Database;
 
@@ -14,6 +14,8 @@ export function openDb(file = process.env.DATABASE_PATH ?? path.join(process.cwd
   db.exec(SCHEMA);
   const { n } = db.prepare("SELECT COUNT(*) AS n FROM users").get() as { n: number };
   if (n === 0) seed(db);
+  const { f } = db.prepare("SELECT COUNT(*) AS f FROM feature_flags").get() as { f: number };
+  if (f === 0) seedFlags(db);
   return db;
 }
 
