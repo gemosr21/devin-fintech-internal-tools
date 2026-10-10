@@ -92,3 +92,12 @@ The scaffold's `.env*` rule (line 182) came after `!.env.example`, so it re-igno
 git check-ignore -v .env .env.local .env.production .env.development.local  -> all ignored by .gitignore:182:.env*
 git check-ignore -v .env.example                                             -> .gitignore:183:!.env.example (not ignored)
 ```
+
+## Seed script honours .env files (review bug)
+
+`npm run seed` runs through `tsx`, which doesn't load `.env*` files, so a `DATABASE_PATH` set only in `.env.local` was ignored and the default DB got reseeded. `scripts/seed.ts` now calls `loadEnvConfig(process.cwd())` from `@next/env`, as the Next 16 environment-variables guide describes, and `@next/env@^16.4.0` is now a direct dependency.
+```
+echo "DATABASE_PATH=./data/custom-check.db" > .env.local && npm run seed  -> Seeded 24 ... into ./data/custom-check.db
+rm .env.local data/custom-check.db* && npm run seed                         -> Seeded 24 ... into .../data/app.db
+npm test -> 21 passed; npm run typecheck -> clean
+```

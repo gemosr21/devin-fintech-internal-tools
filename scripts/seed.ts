@@ -1,5 +1,9 @@
+import { loadEnvConfig } from "@next/env";
 import { openDb } from "../lib/db";
 import { seed } from "../lib/seed";
+
+// Load .env / .env.local the same way `next dev`/`next start` do, so DATABASE_PATH matches the app.
+loadEnvConfig(process.cwd());
 
 const db = openDb();
 seed(db);
