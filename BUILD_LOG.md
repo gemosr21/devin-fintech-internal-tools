@@ -50,3 +50,26 @@ POST /api/flags/fx_quote_v2 {"enabled":true}
   no identity -> 401   {"enabled":"yes"} as ada -> 400
 ```
 Browser `/flags` as Riley: read-only notice, no toggle buttons; `fx_quote_v2` shows `ada` + 1 audit event.
+Browser `/flags` as Ada Admin: toggle buttons shown; clicked **Turn on** for `instant_refunds` → state `on`, last changed `ada`, 1 audit event.
+
+## Fresh-clone setup check
+
+```
+git clone -b devin/1791672047-refunds-prototype https://github.com/gemosr21/devin-fintech-internal-tools ~/fresh
+cd ~/fresh            # no data/ dir in the clone (gitignored)
+npm install           -> found 0 vulnerabilities
+npm test              -> Test Files 3 passed, Tests 20 passed
+npm run typecheck     -> clean
+npm run build         -> Compiled successfully
+npm run seed          -> Seeded 24 synthetic refund requests into ~/fresh/data/app.db
+npx next start -p 3001
+scripts/verify-api.sh http://localhost:3001   -> all 10 checks PASS
+```
+Restart persistence (fresh clone): stopped and restarted the server, then `GET /api/refunds/RF-1002` returned `approved riley verify-api.sh`, audit events: 1.
+Failure: my first post-restart query checked RF-1023 by mistake, which was still pending in the fresh DB, so it proved nothing. Re-ran it against RF-1002, the request verify-api.sh had approved.
+
+## Scope cuts / not done
+
+- Feature flags were **not cut**. Cross-tool reuse of `requirePermission` + `recordAudit` was demonstrated, but only across two small tools in one session.
+- No production auth, deployment, real integrations, pagination, or maker-checker thresholds (see README → Production gaps).
+- No automated browser (E2E) tests. Browser checks were manual and are described above.
