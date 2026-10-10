@@ -10,7 +10,7 @@ All data is synthetic (`example.test` emails, made-up merchants). No real paymen
 
 ## Run it
 
-Requires Node 24 (`.nvmrc`) and npm 10.
+Requires Node 24 (`.nvmrc`) and npm 10 or newer.
 
 ```bash
 npm install
