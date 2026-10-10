@@ -112,3 +112,11 @@ NODE_ENV=production npm run seed         -> Seeded 24 ... into ./data/prod-check
 (no env files) npm run seed              -> .../data/app.db
 npm test -> 21 passed; typecheck clean
 ```
+
+## Pre-merge fresh clone, following the README (found a verify-script bug)
+
+`~/fresh2` is a fresh clone of the branch at 31c8fb4. I ran `npm install`, then `npm test` (21 passed), `npm run typecheck` (ok), `npm run seed` (24 refunds), and `npm run dev`. With `demo_user=riley`, the refunds page listed 24 refunds. A viewer decision attempt got 403.
+
+The README's verification block (`npm run seed && npm run build && npx next start -p 3000 &` then `scripts/verify-api.sh`) failed, because the script ran before the server was ready (curl returned `000`). Worse, `/tmp/verify-body` was left over from an earlier run, so `PASS exactly one audit event` passed on stale data.
+
+Fix: `verify-api.sh` now waits up to 60s for the server and fails if it never answers. It writes each response to a fresh `mktemp` file, emptied before every request. Once the server was up, the same script passed 10/10 against the fresh clone.
