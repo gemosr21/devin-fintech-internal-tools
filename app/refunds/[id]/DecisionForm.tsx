@@ -25,7 +25,8 @@ export function DecisionForm({ refundId }: { refundId: string }) {
       }
       router.refresh();
     } catch {
-      setError("Network error. Nothing was saved by this attempt unless the page shows otherwise; please retry.");
+      setError("Network error: the decision may or may not have been saved. Reloaded the current status; check it before retrying.");
+      router.refresh();
     } finally {
       setBusy(false);
     }
